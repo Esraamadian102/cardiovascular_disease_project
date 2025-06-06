@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Heart Health Predictor</title>
+
+    <!-- Google Fonts: Lora & Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+    
+    <style>
+        :root {
+            --color-bg: #fdfcff;
+            --color-surface: #ffffff;
+            --color-primary: #e83e8c; /* Pink */
+            --color-primary-light: #fff9fb;
+            --color-text-primary: #343a40;
+            --color-text-secondary: #6c757d;
+            --color-border: #f1f3f5;
+            --color-success: #28a745;
+            --color-danger: #e83e8c;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        body {
+            font-family: "Inter", sans-serif;
+            background-color: var(--color-bg);
+            color: var(--color-text-primary);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem;
+            box-sizing: border-box;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1024px; /* Extended width */
+            background-color: var(--color-surface);
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column-reverse; /* Mobile first: stacked layout */
+            overflow: hidden;
+        }
+        @media (min-width: 992px) {
+            .container {
+                flex-direction: row; /* Two-column layout for desktop */
+            }
+        }
+        
+        .form-section {
+            padding: 3rem;
+            width: 100%;
+            box-sizing: border-box;
+            order: 2; /* Form appears on the right on desktop */
+        }
+        @media (min-width: 992px) {
+            .form-section { width: 55%; order: 2; }
+        }
+
+        .info-section {
+            padding: 3rem;
+            width: 100%;
+            box-sizing: border-box;
+            background-color: var(--color-primary-light);
+            border-bottom: 1px solid var(--color-border); /* Border for mobile */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            transition: background-color 0.4s ease;
+            order: 1; /* Result appears on top on mobile */
+        }
+        @media (min-width: 992px) {
+            .info-section { 
+                width: 45%; 
+                order: 1; /* Result appears on the left on desktop */
+                border-right: 1px solid var(--color-border);
+                border-bottom: none;
+            }
+        }
+
+        h1 {
+            font-family: "Lora", serif;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        .heart-icon-title {
+            font-size: 3.5rem;
+            color: var(--color-primary);
+            margin-bottom: 1rem;
+            animation: pulse 2.5s infinite ease-in-out;
+        }
+        .subtitle {
+            color: var(--color-text-secondary);
+            margin-top: 0;
+            margin-bottom: 2.5rem;
+            font-size: 1rem;
+            font-weight: 300;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.25rem;
+        }
+        
+        .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--color-text-secondary);
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            box-sizing: border-box;
+        }
+        .radio-group { display: flex; gap: 1.5rem; align-items: center; padding-top: 0.5rem; }
+        .radio-group input { width: auto; }
+
+        .submit-btn {
+            width: 100%;
+            background-color: var(--color-primary);
+            color: white;
+            font-weight: 500;
+            padding: 1rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-top: 2rem;
+        }
+
+        /* Result Styling */
+        .risk-text {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-top: 1rem;
+        }
+        .risk-probability {
+             font-size: 1rem;
+             margin-top: 0.25rem;
+        }
+        .text-success { color: var(--color-success); }
+        .text-danger { color: var(--color-danger); }
+        
+        .loader {
+            width: 36px;
+            height: 36px;
+            border: 4px solid #adb5bd;
+            border-top-color: var(--color-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.08); opacity: 0.8; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- INFO & RESULT SECTION -->
+        <div class="info-section" id="result-panel">
+            <div id="result-content">
+                <div class="heart-icon-title">♡</div>
+                <h1 style="color: var(--color-primary);">Risk Prediction</h1>
+                <p style="color: var(--color-text-secondary);">Results will appear here after checking.</p>
+            </div>
+        </div>
+
+        <!-- FORM SECTION -->
+        <div class="form-section">
+            <h1>Patient Vitals</h1>
+            <p class="subtitle">Enter patient information to predict cardiovascular disease.</p>
+            
+            <form id="risk-form">
+                <div class="form-grid">
+                    <!-- Feature Inputs for the Kaggle Dataset -->
+                    <div class="form-group"><label for="age">Age (Years)</label><input type="number" id="age" name="age" value="50" required></div>
+                    <div class="form-group"><label>Gender</label><div class="radio-group"><label><input type="radio" name="gender" value="2"> Male</label><label><input type="radio" name="gender" value="1" checked> Female</label></div></div>
+                    <div class="form-group"><label for="height">Height (cm)</label><input type="number" id="height" name="height" value="165" required></div>
+                    <div class="form-group"><label for="weight">Weight (kg)</label><input type="number" id="weight" name="weight" value="70" required></div>
+                    <div class="form-group"><label for="ap_hi">Systolic BP</label><input type="number" id="ap_hi" name="ap_hi" value="120" required></div>
+                    <div class="form-group"><label for="ap_lo">Diastolic BP</label><input type="number" id="ap_lo" name="ap_lo" value="80" required></div>
+                    <div class="form-group"><label for="cholesterol">Cholesterol</label><select id="cholesterol" name="cholesterol"><option value="1">Normal</option><option value="2">Above Normal</option><option value="3">Well Above Normal</option></select></div>
+                    <div class="form-group"><label for="gluc">Glucose</label><select id="gluc" name="gluc"><option value="1">Normal</option><option value="2">Above Normal</option><option value="3">Well Above Normal</option></select></div>
+                    <div class="form-group"><label>Smoker</label><div class="radio-group"><label><input type="radio" name="smoke" value="1"> Yes</label><label><input type="radio" name="smoke" value="0" checked> No</label></div></div>
+                    <div class="form-group"><label>Alcohol Intake</label><div class="radio-group"><label><input type="radio" name="alco" value="1"> Yes</label><label><input type="radio" name="alco" value="0" checked> No</label></div></div>
+                    <div class="form-group" style="grid-column: 1 / -1;"><label>Physical Activity</label><div class="radio-group"><label><input type="radio" name="active" value="1" checked> Active</label><label><input type="radio" name="active" value="0"> Inactive</label></div></div>
+                </div>
+                <button type="submit" id="submit-button" class="submit-btn">Predict Risk</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById("risk-form");
+        const submitButton = document.getElementById("submit-button");
+        const resultContent = document.getElementById("result-content");
+        
+        form.addEventListener("submit", async (event) => {
+            event.preventDefault();
+            
+            submitButton.disabled = true;
+            submitButton.textContent = 'Analyzing...';
+            resultContent.innerHTML = '<div class="loader"></div>';
+            
+            const formData = new FormData(form);
+            const data = {};
+            for (let [key, value] of formData.entries()) {
+                data[key] = Number(value); 
+            }
+
+            try {
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data),
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+                }
+                
+                const result = await response.json();
+                
+                let resultText, resultClass, probText;
+                if (result.has_disease === 1) {
+                    resultText = "High Risk";
+                    resultClass = "danger";
+                    probText = `Probability of Disease: ${(result.probabilities[1] * 100).toFixed(1)}%`;
+                } else {
+                    resultText = "Low Risk";
+                    resultClass = "success";
+                    probText = `Probability of No Disease: ${(result.probabilities[0] * 100).toFixed(1)}%`;
+                }
+                
+                resultContent.innerHTML = `
+                    <div class="result-display">
+                        <div class="heart-icon-title" style="color: var(--color-${resultClass});">♡</div>
+                        <h1 class="risk-text text-${resultClass}">${resultText}</h1>
+                        <p class="risk-probability" style="color: var(--color-text-secondary);">${probText}</p>
+                    </div>
+                `;
+
+            } catch (error) {
+                console.error('Prediction error:', error);
+                resultContent.innerHTML = `<div class="risk-text text-danger">Error</div><p style="color: var(--color-text-secondary);">Could not get prediction. Please check console for details.</p>`;
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = 'Predict Risk';
+            }
+        });
+    </script>
+</body>
+</html>
