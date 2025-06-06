@@ -59,7 +59,8 @@ To run the web application:
 pip install streamlit
 streamlit run app.py
 ```
-
+## video 
+https://www.canva.com/design/DAGpnTrlPnY/8_vr65oGTwq_FMDOAo48tA/edit?utm_content=DAGpnTrlPnY&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
 ## Requirements
 - Python 3.6+
 - pandas
