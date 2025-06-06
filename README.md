@@ -60,7 +60,7 @@ pip install streamlit
 streamlit run app.py
 ```
 ## video 
-https://www.canva.com/design/DAGpnTrlPnY/8_vr65oGTwq_FMDOAo48tA/edit?utm_content=DAGpnTrlPnY&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
+https://nileuniversity-my.sharepoint.com/personal/e_mahmoud2283_nu_edu_eg/_layouts/15/stream.aspx?id=%2Fpersonal%2Fe%5Fmahmoud2283%5Fnu%5Fedu%5Feg%2FDocuments%2FMachine%20learning%20project%2Emp4&referrer=StreamWebApp%2EWeb&referrerScenario=AddressBarCopied%2Eview%2E4a2be335%2Dbdf6%2D484a%2Db013%2D28fdc09d1efa&isDarkMode=false
 ## Requirements
 - Python 3.6+
 - pandas
