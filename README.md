@@ -2,6 +2,8 @@
 
 ## Overview
 This project aims to predict cardiovascular disease using machine learning techniques. The model is trained on a dataset of 70,000 patient records with various health metrics and lifestyle factors.
+## video 
+https://nileuniversity-my.sharepoint.com/:v:/g/personal/e_mahmoud2283_nu_edu_eg/EZgg4SJn0vRPpvuyGr5q3ckBKUCL0xWQOddEBRvdN6-Xhg?e=acUb1h
 
 ## Dataset
 The dataset contains the following features:
@@ -59,8 +61,6 @@ To run the web application:
 pip install streamlit
 streamlit run app.py
 ```
-## video 
-https://nileuniversity-my.sharepoint.com/personal/e_mahmoud2283_nu_edu_eg/_layouts/15/stream.aspx?id=%2Fpersonal%2Fe%5Fmahmoud2283%5Fnu%5Fedu%5Feg%2FDocuments%2FMachine%20learning%20project%2Emp4&referrer=StreamWebApp%2EWeb&referrerScenario=AddressBarCopied%2Eview%2E4a2be335%2Dbdf6%2D484a%2Db013%2D28fdc09d1efa&isDarkMode=false
 ## Requirements
 - Python 3.6+
 - pandas
